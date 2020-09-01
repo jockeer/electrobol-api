@@ -22,18 +22,20 @@ router.get('/api/getUsers', async (req, res, next) => {
 })
 
 
-router.get('/api/obtenerSectores', async (req, res, next) => {
-    let all = await pool.query(`select * from sector`)
+router.get('/api/verificarCliente/:ci', async (req, res, next) => {
+    let all = await pool.query(`select * from cliente where ci = '${req.params.ci}'`)
     json = all.rows
     // console.log(json)
     res.json(all.rows)
 })
-router.get('/api/obtenerPuesto/:id', async (req, res, next) => {
-    let all = await pool.query(`select * from puesto where id=${req.params.id}`)
+router.post('/api/registrarCliente', async (req, res, next) => {
+    let body = req.body
+    // console.log(body)
+    let all = await pool.query(`insert into cliente(ci,nombre,apellido,telefono,correo)values('${body.ci}','${body.nombre}','${body.apellido}', '${body.telefono}', '${body.correo}')`)
     json = all.rows
     // console.log(json)
     res.json(all.rows)
 })
 
 
-module.exports = router, json
+module.exports = router
